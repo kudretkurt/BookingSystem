@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>b57466cf-8364-4f79-8ffa-ac03d9ce312f</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Http" Version="8.1.0"/>
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0"/>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\BookingSystem.Infrastructure\BookingSystem.Infrastructure.csproj"/>
+    </ItemGroup>
+
+</Project>
