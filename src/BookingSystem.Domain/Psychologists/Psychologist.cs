@@ -102,7 +102,7 @@ public class Psychologist : Entity
         Appointments.Remove(appointment);
         var availabilityReturnedBack = Availability.Create(appointment.Date, appointment.Date, appointment.StartTime,
             appointment.EndTime);
-        //TODO;add test case for this scenario
+        
         if (availabilityReturnedBack.IsFailure) return availabilityReturnedBack.Error;
         Availabilities.Add(availabilityReturnedBack.Value.First());
         return Result.Success(this);

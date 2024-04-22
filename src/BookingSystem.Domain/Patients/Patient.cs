@@ -55,7 +55,6 @@ public sealed class Patient : Entity
     public Result<Appointment> CreateAppointment(Guid psychologistId, DateOnly date, TimeOnly startTime,
         TimeOnly endTime)
     {
-        //TODO; check race condition scenario
         if (ConnectedPsychologists.All(t => t.PsychologistId != psychologistId))
             return Result.Failure<Appointment>(PatientErrors.CreateAppointmentJustWithConnectedPsychologist);
 
