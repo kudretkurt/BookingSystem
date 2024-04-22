@@ -35,7 +35,7 @@ public static class DependencyInjection
             .Map(dest => dest.PsychologistLastName, src => src.Psychologist.LastName)
             .Map(dest => dest.Availabilities, src => src.Psychologist.Availabilities);
 
-        TypeAdapterConfig<Appointment, UpComingAppointment>
+        TypeAdapterConfig<Domain.Appointments.Appointment, UpComingAppointment>
             .NewConfig();
 
         TypeAdapterConfig<Domain.Psychologists.Psychologist, PsychologistResponse>

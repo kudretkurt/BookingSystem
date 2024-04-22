@@ -15,4 +15,8 @@
         <ProjectReference Include="..\BookingSystem.Domain\BookingSystem.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Appointment\"/>
+    </ItemGroup>
+
 </Project>

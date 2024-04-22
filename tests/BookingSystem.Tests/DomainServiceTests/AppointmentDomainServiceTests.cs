@@ -71,16 +71,18 @@ public class AppointmentDomainServiceTests(RepositoryFixture fixture) : IClassFi
             startTime, endTime, new CancellationToken(false));
 
         //Act
-        var cancelAppointmentResult = await fixture.AppointmentDomainService.CancelAppointment(appointmentResult.Value,new CancellationToken(false));
+        var cancelAppointmentResult =
+            await fixture.AppointmentDomainService.CancelAppointment(appointmentResult.Value,
+                new CancellationToken(false));
 
 
         //Assert
         cancelAppointmentResult.IsSuccess.Should().BeTrue();
-        
+
         var appointment = await
             fixture.AppointmentRepository.GetAppointmentByIdAsync(appointmentResult.Value,
                 new CancellationToken(false));
-        
+
         appointment.Should().BeNull();
     }
 }

@@ -18,7 +18,8 @@ public class AppointmentDomainService : IAppointmentDomainService
         _patientRepository = patientRepository;
     }
 
-    public async Task<Result<Guid>> CreateAppointment(Guid patientId, Guid psychologistId, DateOnly date, TimeOnly startTime,
+    public async Task<Result<Guid>> CreateAppointment(Guid patientId, Guid psychologistId, DateOnly date,
+        TimeOnly startTime,
         TimeOnly endTime, CancellationToken cancellationToken)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId, cancellationToken);

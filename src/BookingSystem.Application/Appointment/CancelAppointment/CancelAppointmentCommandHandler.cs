@@ -2,7 +2,7 @@
 using BookingSystem.Domain.Appointments;
 using BookingSystem.Shared;
 
-namespace BookingSystem.Application.Patient.CancelAppointment;
+namespace BookingSystem.Application.Appointment.CancelAppointment;
 
 public class CancelAppointmentCommandHandler(IAppointmentDomainService appointmentDomainService)
     : ICommandHandler<CancelAppointmentCommand, string>

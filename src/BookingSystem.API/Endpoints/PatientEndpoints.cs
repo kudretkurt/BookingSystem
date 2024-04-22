@@ -1,5 +1,5 @@
 ﻿using BookingSystem.API.Extensions;
-using BookingSystem.Application.Patient.CancelAppointment;
+using BookingSystem.Application.Appointment.CancelAppointment;
 using BookingSystem.Application.Patient.ConnectWithPsychologist;
 using BookingSystem.Application.Patient.Create;
 using BookingSystem.Application.Patient.CreateAppointment;
