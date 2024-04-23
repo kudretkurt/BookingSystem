@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationSettings(builder.Configuration);
 
-//I added rateLimiter to protect our API unexpected request :)
+//I added rateLimiter to protect our API for unexpected request.
 builder.Services.AddRateLimiter(options =>
 {
     options.AddFixedWindowLimiter("fixed", options =>

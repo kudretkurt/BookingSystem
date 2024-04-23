@@ -12,7 +12,7 @@ public static class PatientEndpoints
 {
     public static void MapPatientEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapPost("api/patients",
+        app.MapPost("patients",
             async (CreatePatientCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(command, cancellationToken);
@@ -20,7 +20,7 @@ public static class PatientEndpoints
                 return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
             });
 
-        app.MapPatch("api/patients/connect-with-psychologist", async (ConnectWithPsychologistCommand command,
+        app.MapPatch("patients/connect-with-psychologist", async (ConnectWithPsychologistCommand command,
             ISender sender, CancellationToken cancellationToken) =>
         {
             var result = await sender.Send(command, cancellationToken);
@@ -28,7 +28,7 @@ public static class PatientEndpoints
             return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
         });
 
-        app.MapPatch("api/patients/create-appointments", async (CreateAppointmentCommand command,
+        app.MapPatch("patients/create-appointments", async (CreateAppointmentCommand command,
             ISender sender, CancellationToken cancellationToken) =>
         {
             var result = await sender.Send(command, cancellationToken);
@@ -36,7 +36,7 @@ public static class PatientEndpoints
             return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
         });
 
-        app.MapDelete("api/patients/cancel-appointment/{appointmentId}", async (Guid appointmentId,
+        app.MapDelete("patients/cancel-appointment/{appointmentId}", async (Guid appointmentId,
             ISender sender, CancellationToken cancellationToken) =>
         {
             var result = await sender.Send(new CancelAppointmentCommand(appointmentId), cancellationToken);
@@ -44,7 +44,7 @@ public static class PatientEndpoints
             return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
         });
 
-        app.MapGet("api/patients/{patientId}",
+        app.MapGet("patients/{patientId}",
             async (Guid patientId, ISender sender, CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(new GetPatientByIdQuery(patientId), cancellationToken);

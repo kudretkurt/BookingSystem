@@ -12,7 +12,7 @@ public static class PsychologistEndpoints
 {
     public static void MapPsychologistEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapPost("api/psychologists",
+        app.MapPost("psychologists",
             async (CreatePsychologistCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(command, cancellationToken);
@@ -20,7 +20,7 @@ public static class PsychologistEndpoints
                 return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
             });
 
-        app.MapPatch("api/psychologists/create-availability",
+        app.MapPatch("psychologists/create-availability",
             async (CreateAvailabilityCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(command, cancellationToken);
@@ -28,7 +28,7 @@ public static class PsychologistEndpoints
                 return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
             });
 
-        app.MapPatch("api/psychologists/edit-availability",
+        app.MapPatch("psychologists/edit-availability",
             async (EditAvailabilityCommand command, ISender sender, CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(command, cancellationToken);
@@ -36,7 +36,7 @@ public static class PsychologistEndpoints
                 return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
             });
 
-        app.MapDelete("api/psychologists/cancel-appointment/{appointmentId}", async (Guid appointmentId,
+        app.MapDelete("psychologists/cancel-appointment/{appointmentId}", async (Guid appointmentId,
             ISender sender, CancellationToken cancellationToken) =>
         {
             var result = await sender.Send(new CancelAppointmentCommand(appointmentId), cancellationToken);
@@ -44,7 +44,7 @@ public static class PsychologistEndpoints
             return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
         });
 
-        app.MapGet("api/psychologists/{psychologistId}",
+        app.MapGet("psychologists/{psychologistId}",
             async (Guid psychologistId, ISender sender, CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(new GetPsychologistByIdQuery(psychologistId), cancellationToken);
