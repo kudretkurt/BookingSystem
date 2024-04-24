@@ -50,6 +50,6 @@ public static class PatientEndpoints
                 var result = await sender.Send(new GetPatientByIdQuery(patientId), cancellationToken);
 
                 return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
-            });
+            }).CacheOutput(p => p.SetVaryByQuery("patientId"));
     }
 }

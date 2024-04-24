@@ -13,10 +13,11 @@ ConfigurationSettings(builder.Configuration);
 //I added rateLimiter to protect our API for unexpected request.
 builder.Services.AddRateLimiter(options =>
 {
-    options.AddFixedWindowLimiter("fixed", options =>
+    options.AddFixedWindowLimiter("fixed", rateLimiterOptions =>
     {
-        options.PermitLimit = 4;
-        options.Window = TimeSpan.FromSeconds(10);
+        rateLimiterOptions.AutoReplenishment = true;
+        rateLimiterOptions.PermitLimit = 4;
+        rateLimiterOptions.Window = TimeSpan.FromSeconds(10);
     });
 });
 
@@ -30,7 +31,7 @@ builder.Services.AddProblemDetails();
 
 builder.Services.InstallSwagger(builder.Environment);
 
-builder.Services.AddOutputCache(builder => builder.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(60));
+builder.Services.AddOutputCache(options => options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(10));
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -86,6 +87,7 @@ void MapEndpoints()
 
     versionedGroup.MapPatientEndpoints();
     versionedGroup.MapPsychologistEndpoints();
+    versionedGroup.RequireRateLimiting("fixed");
 }
 
 if (app.Environment.IsDevelopment())
