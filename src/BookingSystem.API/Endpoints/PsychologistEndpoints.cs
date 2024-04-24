@@ -50,6 +50,6 @@ public static class PsychologistEndpoints
                 var result = await sender.Send(new GetPsychologistByIdQuery(psychologistId), cancellationToken);
 
                 return result.IsSuccess ? Results.Ok(result.Value) : result.ToProblemDetails();
-            }).CacheOutput(p => p.SetVaryByQuery("psychologistId"));;
+            }).CacheOutput(p => p.SetVaryByQuery("psychologistId"));
     }
 }
