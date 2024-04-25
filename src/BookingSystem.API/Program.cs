@@ -16,6 +16,7 @@ builder.Services.AddRateLimiter(options =>
     options.AddFixedWindowLimiter("fixed", rateLimiterOptions =>
     {
         rateLimiterOptions.AutoReplenishment = true;
+        //Also, WindowNumber and PermitLimit are just arbitrary number because I don't know the application's request count and user's behaviour 
         rateLimiterOptions.PermitLimit = 4;
         rateLimiterOptions.Window = TimeSpan.FromSeconds(10);
     });
@@ -31,6 +32,7 @@ builder.Services.AddProblemDetails();
 
 builder.Services.InstallSwagger(builder.Environment);
 
+//I gave just 10 seconds intuitively , because I don't know user's (user can be patient and psychologist) behaviour in our application .
 builder.Services.AddOutputCache(options => options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(10));
 
 builder.Services.AddEndpointsApiExplorer();
