@@ -12,7 +12,7 @@ internal sealed class CreatePsychologistCommandHandler(IPsychologistRepository p
         var psychologistResult = Domain.Psychologists.Psychologist.Create(command.FirstName, command.LastName);
         if (psychologistResult.IsFailure) return Result.Failure<Guid>(psychologistResult.Error);
 
-        await psychologistRepository.Insert(psychologistResult.Value, cancellationToken);
+        await psychologistRepository.InsertAsync(psychologistResult.Value, cancellationToken);
 
         return psychologistResult.Value.Id;
     }

@@ -11,7 +11,7 @@ internal sealed class CreatePatientCommandHandler(IPatientRepository patientRepo
     {
         var patientResult = Domain.Patients.Patient.Create(command.FirstName, command.LastName, command.Age);
         if (patientResult.IsFailure) return Result.Failure<Guid>(patientResult.Error);
-        await patientRepository.Insert(patientResult.Value, cancellationToken);
+        await patientRepository.InsertAsync(patientResult.Value, cancellationToken);
 
 
         //check

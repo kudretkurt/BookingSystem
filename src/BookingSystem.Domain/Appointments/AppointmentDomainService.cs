@@ -35,7 +35,7 @@ public class AppointmentDomainService : IAppointmentDomainService
         if (removeAvailabilityResult.IsFailure) return Result.Failure<Guid>(removeAvailabilityResult.Error);
 
         var appointment = appointmentResult.Value;
-        await _appointmentRepository.Insert(appointment, cancellationToken);
+        await _appointmentRepository.InsertAsync(appointment, cancellationToken);
         return Result.Success(appointment.Id);
     }
 
@@ -57,7 +57,7 @@ public class AppointmentDomainService : IAppointmentDomainService
         var cancelAppointmentByPsychologistResult = psychologist.CancelAppointment(appointmentId);
         if (cancelAppointmentByPsychologistResult.IsFailure) return cancelAppointmentByPsychologistResult.Error;
 
-        await _appointmentRepository.Remove(appointment, cancellationToken);
+        await _appointmentRepository.RemoveAsync(appointment, cancellationToken);
         return Result.Success();
     }
 }

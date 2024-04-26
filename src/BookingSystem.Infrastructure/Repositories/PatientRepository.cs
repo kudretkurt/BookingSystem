@@ -13,7 +13,7 @@ public sealed class PatientRepository : IPatientRepository
         _dbContext = dbContext;
     }
 
-    public async Task Insert(Patient patient, CancellationToken cancellationToken)
+    public async Task InsertAsync(Patient patient, CancellationToken cancellationToken)
     {
         await _dbContext.AddAsync(patient, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

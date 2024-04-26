@@ -12,11 +12,11 @@ public class AppointmentDomainServiceTests(RepositoryFixture fixture) : IClassFi
         //Arrange
         var patientResult = Patient.Create("kudret", "kurt", 33);
         var patient = patientResult.Value;
-        await fixture.PatientRepository.Insert(patient, new CancellationToken(false));
+        await fixture.PatientRepository.InsertAsync(patient, new CancellationToken(false));
 
         var psychologistResult = Psychologist.Create("doctorFirstName", "doctorLastName");
         var psychologist = psychologistResult.Value;
-        await fixture.PsychologistRepository.Insert(psychologist, new CancellationToken(false));
+        await fixture.PsychologistRepository.InsertAsync(psychologist, new CancellationToken(false));
 
         var patientConnectionResult = patient.ConnectPsychologist(psychologist);
         await fixture.PatientRepository.UpdateAsync(patient, new CancellationToken(false));
@@ -50,11 +50,11 @@ public class AppointmentDomainServiceTests(RepositoryFixture fixture) : IClassFi
         //Arrange
         var patientResult = Patient.Create("patient1FirstName", "patient1LastName", 33);
         var patient = patientResult.Value;
-        await fixture.PatientRepository.Insert(patient, new CancellationToken(false));
+        await fixture.PatientRepository.InsertAsync(patient, new CancellationToken(false));
 
         var psychologistResult = Psychologist.Create("doctorFirstName", "doctorLastName");
         var psychologist = psychologistResult.Value;
-        await fixture.PsychologistRepository.Insert(psychologist, new CancellationToken(false));
+        await fixture.PsychologistRepository.InsertAsync(psychologist, new CancellationToken(false));
 
         var patientConnectionResult = patient.ConnectPsychologist(psychologist);
         await fixture.PatientRepository.UpdateAsync(patient, new CancellationToken(false));

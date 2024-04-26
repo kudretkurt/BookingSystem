@@ -13,13 +13,13 @@ public sealed class AppointmentRepository : IAppointmentRepository
         _dbContext = dbContext;
     }
 
-    public async Task Insert(Appointment appointment, CancellationToken cancellationToken)
+    public async Task InsertAsync(Appointment appointment, CancellationToken cancellationToken)
     {
         await _dbContext.AddAsync(appointment, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task Remove(Appointment appointment, CancellationToken cancellationToken)
+    public async Task RemoveAsync(Appointment appointment, CancellationToken cancellationToken)
     {
         _dbContext.Remove(appointment);
         await _dbContext.SaveChangesAsync(cancellationToken);

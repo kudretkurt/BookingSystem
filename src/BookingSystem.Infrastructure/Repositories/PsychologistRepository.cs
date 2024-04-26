@@ -13,7 +13,7 @@ public sealed class PsychologistRepository : IPsychologistRepository
         _dbContext = dbContext;
     }
 
-    public async Task Insert(Psychologist psychologist, CancellationToken cancellationToken)
+    public async Task InsertAsync(Psychologist psychologist, CancellationToken cancellationToken)
     {
         await _dbContext.AddAsync(psychologist, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
