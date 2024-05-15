@@ -41,10 +41,10 @@ public sealed class Patient : Entity
     public Result ConnectPsychologist(Psychologist psychologist)
     {
         //TODO; get count value from config
-        if (ConnectedPsychologists.Count == 2) return PatientErrors.MaxConnectedPsychologist;
+        if (ConnectedPsychologists.Count == 2) return Result.Failure(PatientErrors.MaxConnectedPsychologist);
 
         if (ConnectedPsychologists.Any(t => t.PsychologistId == psychologist.Id))
-            return PatientErrors.AlreadyConnectedPsychologist;
+            return Result.Failure(PatientErrors.AlreadyConnectedPsychologist);
 
         ConnectedPsychologists.Add(new PatientConnection
             { PsychologistId = psychologist.Id, PatientId = Id, Psychologist = psychologist });
@@ -80,15 +80,15 @@ public sealed class Patient : Entity
     public Result CancelAppointment(Guid appointmentId)
     {
         var appointment = Appointments.FirstOrDefault(t => t.Id == appointmentId);
-        if (appointment == null) return PatientErrors.AppointmentDoesNotExist;
+        if (appointment == null) return Result.Failure(PatientErrors.AppointmentDoesNotExist);
 
         var startTime = appointment.StartTime;
         var appointmentExactDate = appointment.Date.ToDateTime(startTime);
 
-        if (appointmentExactDate < DateTime.UtcNow) return PatientErrors.CanNotDeletePassedAppointment;
+        if (appointmentExactDate < DateTime.UtcNow) return Result.Failure(PatientErrors.CanNotDeletePassedAppointment);
 
         var gap = appointmentExactDate - DateTime.UtcNow;
-        if (gap.TotalMinutes <= 60) return PatientErrors.Availability1HourRule;
+        if (gap.TotalMinutes <= 60) return Result.Failure(PatientErrors.Availability1HourRule);
 
         Appointments.Remove(appointment);
         return Result.Success(this);

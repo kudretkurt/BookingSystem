@@ -42,20 +42,22 @@ public class AppointmentDomainService : IAppointmentDomainService
     public async Task<Result> CancelAppointment(Guid appointmentId, CancellationToken cancellationToken)
     {
         var appointment = await _appointmentRepository.GetAppointmentByIdAsync(appointmentId, cancellationToken);
-        if (appointment == null) return AppointmentErrors.AppointmentDoesNotExist;
+        if (appointment == null) return Result.Failure(AppointmentErrors.AppointmentDoesNotExist);
 
         var patient = await _patientRepository.GetPatientByIdAsync(appointment.PatientId, cancellationToken);
-        if (patient == null) return PatientErrors.PatientNotExists(appointment.PatientId);
+        if (patient == null) return Result.Failure(PatientErrors.PatientNotExists(appointment.PatientId));
 
         var cancelAppointmentByPatientResult = patient.CancelAppointment(appointmentId);
-        if (cancelAppointmentByPatientResult.IsFailure) return cancelAppointmentByPatientResult.Error;
+        if (cancelAppointmentByPatientResult.IsFailure) return Result.Failure(cancelAppointmentByPatientResult.Error);
 
         var psychologist =
             await _psychologistRepository.GetPsychologistByIdAsync(appointment.PsychologistId, cancellationToken);
-        if (psychologist == null) return PsychologistErrors.PsychologistNotExists(appointment.PsychologistId);
+        if (psychologist == null)
+            return Result.Failure(PsychologistErrors.PsychologistNotExists(appointment.PsychologistId));
 
         var cancelAppointmentByPsychologistResult = psychologist.CancelAppointment(appointmentId);
-        if (cancelAppointmentByPsychologistResult.IsFailure) return cancelAppointmentByPsychologistResult.Error;
+        if (cancelAppointmentByPsychologistResult.IsFailure)
+            return Result.Failure(cancelAppointmentByPsychologistResult.Error);
 
         await _appointmentRepository.RemoveAsync(appointment, cancellationToken);
         return Result.Success();

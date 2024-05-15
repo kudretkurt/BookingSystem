@@ -59,7 +59,7 @@ public class AppointmentDomainServiceTests(RepositoryFixture fixture) : IClassFi
         var patientConnectionResult = patient.ConnectPsychologist(psychologist);
         await fixture.PatientRepository.UpdateAsync(patient, new CancellationToken(false));
 
-        var date = DateOnly.ParseExact("2024-04-22", "yyyy-MM-dd");
+        var date = DateOnly.ParseExact(DateTime.UtcNow.ToString("yyyy-MM-dd"), "yyyy-MM-dd");
         var startTime = TimeOnly.FromDateTime(DateTime.UtcNow).AddHours(10);
         var endTime = startTime.AddMinutes(30);
 

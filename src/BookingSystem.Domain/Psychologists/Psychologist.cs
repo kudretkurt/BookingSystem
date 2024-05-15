@@ -41,8 +41,9 @@ public class Psychologist : Entity
 
         foreach (var availability in result.Value)
             if (Availabilities.Contains(availability))
-                return PsychologistErrors.AvailabilityNotUnique(availability.Date, availability.StartTime,
-                    availability.EndTime);
+                return Result.Failure(PsychologistErrors.AvailabilityNotUnique(availability.Date,
+                    availability.StartTime,
+                    availability.EndTime));
 
         foreach (var availability in result.Value) Availabilities.Add(availability);
 
@@ -57,7 +58,7 @@ public class Psychologist : Entity
 
         foreach (var availability in result.Value)
             if (!Availabilities.Contains(availability))
-                return PsychologistErrors.AvailabilityNotFound(date, startTime, endTime);
+                return Result.Failure(PsychologistErrors.AvailabilityNotFound(date, startTime, endTime));
 
         foreach (var availability in result.Value) Availabilities.Remove(availability);
 
@@ -68,17 +69,17 @@ public class Psychologist : Entity
         TimeOnly newStartTime, TimeOnly newEndTime)
     {
         var currentAvailabilityResult = Availability.Create(date, date, startTime, endTime);
-        if (currentAvailabilityResult.IsFailure) return currentAvailabilityResult.Error;
+        if (currentAvailabilityResult.IsFailure) return Result.Failure(currentAvailabilityResult.Error);
 
         var changedAvailabilityResult = Availability.Create(newDate, newDate, newStartTime, newEndTime);
-        if (changedAvailabilityResult.IsFailure) return changedAvailabilityResult.Error;
+        if (changedAvailabilityResult.IsFailure) return Result.Failure(changedAvailabilityResult.Error);
 
         var currentAvailability = currentAvailabilityResult.Value.First();
         var changedAvailability = changedAvailabilityResult.Value.First();
 
         if (!Availabilities.Contains(currentAvailability))
-            return PsychologistErrors.AvailabilityNotFound(currentAvailability.Date,
-                currentAvailability.StartTime, currentAvailability.EndTime);
+            return Result.Failure(PsychologistErrors.AvailabilityNotFound(currentAvailability.Date,
+                currentAvailability.StartTime, currentAvailability.EndTime));
 
         Availabilities.Remove(currentAvailability);
         Availabilities.Add(changedAvailability);
@@ -89,21 +90,22 @@ public class Psychologist : Entity
     public Result CancelAppointment(Guid appointmentId)
     {
         var appointment = Appointments.FirstOrDefault(t => t.Id == appointmentId);
-        if (appointment == null) return PsychologistErrors.AppointmentDoesNotExist;
+        if (appointment == null) return Result.Failure(PsychologistErrors.AppointmentDoesNotExist);
 
         var startTime = appointment.StartTime;
         var appointmentExactDate = appointment.Date.ToDateTime(startTime);
 
-        if (appointmentExactDate < DateTime.UtcNow) return PsychologistErrors.CanNotDeletePassedAppointment;
+        if (appointmentExactDate < DateTime.UtcNow)
+            return Result.Failure(PsychologistErrors.CanNotDeletePassedAppointment);
 
         var gap = appointmentExactDate - DateTime.UtcNow;
-        if (gap.TotalMinutes <= 60) return PsychologistErrors.Availability1HourRule;
+        if (gap.TotalMinutes <= 60) return Result.Failure(PsychologistErrors.Availability1HourRule);
 
         Appointments.Remove(appointment);
         var availabilityReturnedBack = Availability.Create(appointment.Date, appointment.Date, appointment.StartTime,
             appointment.EndTime);
-        
-        if (availabilityReturnedBack.IsFailure) return availabilityReturnedBack.Error;
+
+        if (availabilityReturnedBack.IsFailure) return Result.Failure(availabilityReturnedBack.Error);
         Availabilities.Add(availabilityReturnedBack.Value.First());
         return Result.Success(this);
     }
